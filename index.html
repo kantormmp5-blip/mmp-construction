@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>MMP Construction | Building with Purpose</title>
+<style>
+:root{--bg:#f6f3ee;--surface:#ffffff;--ink:#161b22;--muted:#5b6470;--gold:#a97a22;--line:#ddd5c6;--hero:#161b22;--heroink:#f4f1ea;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#12161c;--surface:#1c222b;--ink:#f4f1ea;--muted:#a3abb7;--gold:#c99a43;--line:#2c3440;--hero:#0d1015;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#12161c;--surface:#1c222b;--ink:#f4f1ea;--muted:#a3abb7;--gold:#c99a43;--line:#2c3440;--hero:#0d1015;color-scheme:dark}
+html{scroll-behavior:smooth;scroll-padding-top:calc(64px + env(safe-area-inset-top,0px))}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Helvetica Neue",Arial,sans-serif;line-height:1.6}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--hero);z-index:10}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:9;background:var(--hero);border-bottom:2px solid var(--gold)}
+.bar{max-width:1100px;margin:auto;display:flex;align-items:center;justify-content:space-between;padding:14px 22px}
+.logo{font-weight:800;letter-spacing:.04em;color:var(--heroink);font-size:1.25rem}
+.logo span{color:#c99a43;font-size:.7rem;letter-spacing:.3em;margin-left:8px}
+nav{display:flex;gap:22px;overflow-x:auto}
+nav a{color:var(--heroink);text-decoration:none;font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;white-space:nowrap;opacity:.85}
+nav a:hover{color:#c99a43;opacity:1}
+.hero{background:linear-gradient(135deg,var(--hero) 55%,#2a2216);color:var(--heroink);padding:96px 22px 110px;position:relative;overflow:hidden}
+.hero::after{content:"";position:absolute;right:-120px;top:-60px;width:420px;height:140%;background:linear-gradient(115deg,transparent 45%,rgba(201,154,67,.35) 46%,rgba(201,154,67,.35) 47%,rgba(255,255,255,.04) 48%);transform:skewX(-8deg)}
+.wrap{max-width:1100px;margin:auto;position:relative;z-index:1}
+.eyebrow{color:#c99a43;letter-spacing:.3em;font-size:.75rem;text-transform:uppercase;font-weight:700}
+h1{font-size:clamp(2.2rem,6vw,4.2rem);line-height:1.05;margin:16px 0 20px;font-weight:800;max-width:14em}
+h1 em{font-style:normal;color:#c99a43}
+.lead{max-width:34em;color:#cfd3da;font-size:1.05rem}
+.btns{margin-top:32px;display:flex;gap:14px;flex-wrap:wrap}
+.btn{display:inline-block;padding:13px 26px;font-weight:700;font-size:.85rem;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;border:2px solid #c99a43;color:#161b22;background:#c99a43}
+.btn.ghost{background:transparent;color:#f4f1ea}
+.btn:hover{filter:brightness(1.1)}
+.stats{display:flex;gap:40px;margin-top:56px;flex-wrap:wrap}
+.stats b{display:block;font-size:2rem;color:#c99a43}
+.stats span{font-size:.75rem;letter-spacing:.15em;text-transform:uppercase;color:#aab0ba}
+section{padding:84px 22px}
+h2{font-size:clamp(1.6rem,3.5vw,2.3rem);margin:8px 0 10px;font-weight:800;line-height:1.15}
+.tag{color:var(--gold);letter-spacing:.3em;font-size:.72rem;text-transform:uppercase;font-weight:700}
+.rule{width:56px;height:3px;background:var(--gold);margin:16px 0 28px}
+p{color:var(--muted);margin:0 0 14px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.card{background:var(--surface);border:1px solid var(--line);padding:30px;border-top:3px solid var(--gold)}
+.card h3{margin:0 0 10px;font-size:1.05rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gold)}
+.card p{margin:0}
+.grid4{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:20px}
+.svc{background:var(--surface);border:1px solid var(--line);padding:28px 26px;transition:transform .25s,border-color .25s}
+.svc:hover{transform:translateY(-4px);border-color:var(--gold)}
+.svc i{display:block;font-style:normal;font-weight:800;font-size:1.8rem;color:var(--gold);margin-bottom:8px}
+.svc h3{margin:0;font-size:.95rem;letter-spacing:.08em;text-transform:uppercase}
+.dark{background:var(--hero);color:var(--heroink)}
+.dark p{color:#b6bcc6}
+.filters{display:flex;gap:10px;flex-wrap:wrap;margin:0 0 28px}
+.filters button{background:transparent;color:var(--heroink);border:1px solid #3a4250;padding:8px 18px;font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;cursor:pointer}
+.filters button.on,.filters button:hover{background:#c99a43;color:#161b22;border-color:#c99a43}
+.projects{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:18px}
+.pj{position:relative;min-height:190px;padding:22px;display:flex;flex-direction:column;justify-content:flex-end;background:linear-gradient(160deg,var(--c1),var(--c2));border:1px solid #2c3440;overflow:hidden;transition:transform .25s}
+.pj:hover{transform:translateY(-4px)}
+.pj::before{content:attr(data-n);position:absolute;top:12px;right:18px;font-size:3rem;font-weight:800;color:rgba(201,154,67,.18)}
+.pj small{color:#c99a43;letter-spacing:.2em;text-transform:uppercase;font-size:.68rem;font-weight:700}
+.pj h3{margin:6px 0 0;font-size:1.05rem;color:#f4f1ea}
+.pj[hidden]{display:none}
+.contact{text-align:center}
+.contact h2{font-size:clamp(1.8rem,4.5vw,3rem);color:var(--gold)}
+.contact .btns{justify-content:center}
+footer{background:var(--hero);color:#8d95a2;text-align:center;font-size:.75rem;letter-spacing:.12em;padding:26px 22px calc(26px + env(safe-area-inset-bottom,0px));border-top:2px solid #c99a43}
+footer b{color:#c99a43}
+@media(max-width:720px){.two{grid-template-columns:1fr}.hero{padding:64px 22px 80px}section{padding:60px 22px}.bar{flex-direction:column;gap:10px;align-items:flex-start}.hero::after{display:none}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+
+.pj{padding:0;min-height:0;aspect-ratio:4/3;cursor:pointer;background:#1c222b;border:1px solid #2c3440;display:block;text-align:left;font:inherit;color:inherit}
+.pj::before{display:none}
+.pj img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .5s}
+.pj:hover img{transform:scale(1.06)}
+.pj .cap{position:absolute;inset:auto 0 0 0;padding:46px 18px 16px;background:linear-gradient(transparent,rgba(8,10,14,.92))}
+.pj .cap h3{margin:4px 0 0}.pj .cap em{font-style:normal;color:#aab0ba;font-size:.72rem;letter-spacing:.1em}
+.lb{position:fixed;inset:0;z-index:50;background:rgba(6,8,11,.95);display:none;flex-direction:column;align-items:center;justify-content:center;padding:calc(56px + env(safe-area-inset-top,0px)) 14px calc(20px + env(safe-area-inset-bottom,0px))}
+.lb.on{display:flex}
+.lb img{max-width:100%;max-height:calc(100% - 70px);object-fit:contain}
+.lb .t{color:#f4f1ea;margin-top:14px;font-size:.85rem;letter-spacing:.1em;text-align:center}
+.lb button{position:absolute;background:rgba(20,24,30,.8);color:#f4f1ea;border:1px solid #c99a43;width:46px;height:46px;font-size:1.4rem;cursor:pointer}
+.lb .x{top:calc(12px + env(safe-area-inset-top,0px));right:14px}.lb .pv{left:12px;top:50%}.lb .nx{right:12px;top:50%}
+.lb button:hover{background:#c99a43;color:#161b22}
+</style>
+</head>
+<body>
+<header><div class="bar"><div class="logo">MMP<span>CONSTRUCTION</span></div>
+<nav><a href="#tentang">Tentang</a><a href="#keahlian">Keahlian</a><a href="#proyek">Proyek</a><a href="#kontak">Kontak</a></nav></div></header>
+
+<div class="hero"><div class="wrap">
+<div class="eyebrow">Construction | Build | Renovation</div>
+<h1>Building with purpose. <em>Delivering with precision.</em></h1>
+<p class="lead">MMP Construction berpengalaman di bidang konstruksi, renovasi, dan pekerjaan interior. Fokus kami pada kualitas, kolaborasi, dan pelaksanaan proyek yang dapat diandalkan.</p>
+<div class="btns"><a class="btn" href="#proyek">Lihat Proyek</a><a class="btn ghost" href="#kontak">Hubungi Kami</a></div>
+<div class="stats"><div><b>2004</b><span>Berdiri</span></div><div><b>13+</b><span>Proyek Unggulan</span></div><div><b>4</b><span>Bidang Keahlian</span></div></div>
+</div></div>
+
+<section id="tentang"><div class="wrap">
+<div class="tag">Tentang Kami</div><h2>Dibangun dengan tujuan, dikerjakan dengan presisi.</h2><div class="rule"></div>
+<p style="max-width:42em">Berdiri sejak 2004, MMP Construction membawa pengalaman di bidang konstruksi, renovasi, dan pekerjaan interior. Kami berada di bawah naungan Missio Mandate Partners.</p>
+<div class="two" style="margin-top:30px">
+<div class="card"><h3>Visi</h3><p>Menghadirkan bangunan berkualitas yang mencerminkan tujuan, harapan, dan aspirasi desain setiap klien.</p></div>
+<div class="card"><h3>Misi</h3><p>Berkolaborasi dengan para pemangku kepentingan, menjaga proses kerja yang positif, dan menghasilkan hasil akhir yang memuaskan.</p></div>
+</div></div></section>
+
+<section id="keahlian" style="background:var(--surface);border-block:1px solid var(--line)"><div class="wrap">
+<div class="tag">Keahlian</div><h2>Apa yang kami kerjakan</h2><div class="rule"></div>
+<div class="grid4">
+<div class="svc"><i>01</i><h3>New Build Construction</h3></div>
+<div class="svc"><i>02</i><h3>Renovation &amp; Refurbishment</h3></div>
+<div class="svc"><i>03</i><h3>Construction Materials</h3></div>
+<div class="svc"><i>04</i><h3>Interior Works</h3></div>
+</div></div></section>
+
+<section id="proyek" class="dark"><div class="wrap">
+<div class="tag">Portofolio</div><h2>Proyek kami</h2><div class="rule"></div>
+<p>Sebagian proyek yang telah kami kerjakan di Bali. Klik salah satu proyek untuk melihat galeri fotonya.</p>
+<div class="filters" id="f"><button class="on" data-k="all">Semua</button><button data-k="Villa">Villa</button><button data-k="Komersial">Komersial</button><button data-k="Klinik &amp; Kantor">Klinik &amp; Kantor</button></div>
+<div class="projects" id="p"></div>
+</div></section>
+
+<section id="kontak" class="contact"><div class="wrap">
+<div class="tag">Kontak</div><h2>Let’s build something great.</h2><div class="rule" style="margin-inline:auto"></div>
+<p><b style="color:var(--ink)">MMP Construction</b><br>Jl. Tukad Pakerisan No. 99B, Denpasar Selatan, Bali</p>
+<div class="btns"><a class="btn" href="https://wa.me/62817341342" rel="noopener">WhatsApp: +62 817-341-342 (Rostandi)</a></div>
+</div></section>
+
+<div class="lb" id="lb" role="dialog" aria-label="Galeri proyek"><button class="x" id="lx" aria-label="Tutup">&times;</button><button class="pv" id="lp" aria-label="Sebelumnya">&#8249;</button><img id="li" alt=""><div class="t" id="lt"></div><button class="nx" id="ln" aria-label="Berikutnya">&#8250;</button></div>
+<footer><b>MISSIO MANDATE PARTNERS</b><br>MMP Construction / Company Profile</footer>
+
+<script>
+var D=[{"n": "Sol Space", "k": "Komersial", "s": "sol-space", "c": 14}, {"n": "Hanu – Sol Space", "k": "Komersial", "s": "hanu", "c": 9}, {"n": "Nongbu – Sol Space", "k": "Komersial", "s": "nongbu", "c": 6}, {"n": "Sanur Villa", "k": "Villa", "s": "sanur-villa", "c": 15}, {"n": "SmartStep Clinic", "k": "Klinik & Kantor", "s": "smartstep", "c": 2}, {"n": "Stephanie Aesthetic Clinic", "k": "Klinik & Kantor", "s": "stephanie", "c": 6}, {"n": "Banana Land Office", "k": "Klinik & Kantor", "s": "banana-land", "c": 14}, {"n": "Tukad Unda Private Villa", "k": "Villa", "s": "tukad-unda", "c": 6}, {"n": "Pakerisan Entry", "k": "Komersial", "s": "pakerisan", "c": 3}, {"n": "Seoul Soul Project", "k": "Komersial", "s": "seoul-soul", "c": 3}, {"n": "Waribang Villa", "k": "Villa", "s": "waribang", "c": 9}, {"n": "Tomoro Coffee", "k": "Komersial", "s": "tomoro", "c": 9}, {"n": "Tukad Badung Villa", "k": "Villa", "s": "tukad-badung", "c": 24}, {"n": "The Tokki House", "k": "Villa", "s": "tokki", "c": 15}, {"n": "Villa Sanurei", "k": "Villa", "s": "sanurei", "c": 6}],IMG={};
+function S(p){return IMG[p]||p}
+var box=document.getElementById("p"),lb=document.getElementById("lb"),cur=0,idx=0;
+D.forEach(function(d,i){var b=document.createElement("button");b.className="pj";b.dataset.k=d.k;b.type="button";
+b.innerHTML='<img loading="lazy" alt=""><div class="cap"><small></small><h3></h3><em></em></div>';
+var im=b.querySelector("img");im.src=S("images/"+d.s+"-1.jpg");im.alt=d.n;
+b.querySelector("small").textContent=d.k;b.querySelector("h3").textContent=d.n;b.querySelector("em").textContent=d.c+" foto";
+b.onclick=function(){open_(i,0)};box.appendChild(b)});
+function show(){var d=D[cur];document.getElementById("li").src=S("images/"+d.s+"-"+(idx+1)+".jpg");document.getElementById("li").alt=d.n;
+document.getElementById("lt").textContent=d.n+"  |  "+(idx+1)+" / "+d.c}
+function open_(i,j){cur=i;idx=j;lb.classList.add("on");show()}
+function step(n){var c=D[cur].c;idx=(idx+n+c)%c;show()}
+function close_(){lb.classList.remove("on")}
+document.getElementById("lx").onclick=close_;document.getElementById("lp").onclick=function(){step(-1)};document.getElementById("ln").onclick=function(){step(1)};
+lb.addEventListener("click",function(e){if(e.target===lb)close_()});
+document.addEventListener("keydown",function(e){if(!lb.classList.contains("on"))return;if(e.key==="Escape")close_();if(e.key==="ArrowLeft")step(-1);if(e.key==="ArrowRight")step(1)});
+var tx=0;lb.addEventListener("touchstart",function(e){tx=e.touches[0].clientX},{passive:true});
+lb.addEventListener("touchend",function(e){var d=e.changedTouches[0].clientX-tx;if(Math.abs(d)>50)step(d<0?1:-1)});
+document.getElementById("f").addEventListener("click",function(ev){var b=ev.target.closest("button");if(!b)return;
+this.querySelectorAll("button").forEach(function(x){x.classList.remove("on")});b.classList.add("on");
+var k=b.dataset.k;box.querySelectorAll(".pj").forEach(function(p){p.hidden=!(k==="all"||p.dataset.k===k)})});
+</script>
+</body>
+</html>
